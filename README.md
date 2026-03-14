@@ -4,9 +4,9 @@
 Проект реализует ETL-процесс загрузки банковских данных из файлов в PostgreSQL с последующим формированием витрины мошеннических операций.
 
 Обрабатываются три типа файлов:
-- transactions_DDMMYYYY.txt
-- passport_blacklist_DDMMYYYY.xlsx
-- terminals_DDMMYYYY.xlsx
+- `transactions_DDMMYYYY.txt`
+- `passport_blacklist_DDMMYYYY.xlsx`
+- `terminals_DDMMYYYY.xlsx`
 
 После загрузки данные попадают в STG-слой, затем переносятся в DWH-слой, после чего формируется итоговая витрина `rep_fraud`.
 
@@ -25,6 +25,24 @@
 - pandas
 - openpyxl
 - python-dotenv
+
+## Перед запуском
+Перед запуском `main.py` необходимо:
+
+1. Создать в PostgreSQL схему `"BANK"`.
+2. Подготовить исходные таблицы:
+   - `accounts`
+   - `cards`
+   - `clients`
+3. Выполнить SQL-скрипты:
+   - `sql_scripts/create_stg.sql`
+   - `sql_scripts/create_dwh.sql`
+4. Убедиться, что файл `.env` содержит параметры подключения к БД:
+   - `DB_HOST`
+   - `DB_PORT`
+   - `DB_NAME`
+   - `DB_USER`
+   - `DB_PASSWORD`
 
 ## Логика работы
 1. Python-скрипт считывает входные файлы из корня проекта.
@@ -57,14 +75,6 @@
 - `create_dwh.sql`
 - `prepare_data.sql`
 - `build_report.sql`
-
-## Параметры подключения
-Для подключения к БД используется файл `.env` со следующими параметрами:
-- `DB_HOST`
-- `DB_PORT`
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASSWORD`
 
 ## Запуск
 Команда запуска:
